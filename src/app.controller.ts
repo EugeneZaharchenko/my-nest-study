@@ -17,4 +17,31 @@ export class AppController {
     const token = req['token'];
     return { message: 'Access Authorized', token };
   }
+  @Get('client')
+  checkContentType() {
+    return { message: 'Welcome to /client route' };
+  }
+}
+
+@Controller('client')
+export class ClientController {
+  @Get('route1')
+  route1() {
+    return { message: 'This is Route1 of /client route' };
+  }
+  @Get('route2')
+  route2() {
+    return { message: 'This is Route2 of /client route' };
+  }
+  @Get('route3')
+  route3() {
+    return { message: 'This is Route3 of /client route' };
+  }
+  @Post('route4')
+  route4(@Req() req: Request) {
+    return {
+      contentType: req.headers['content-type'],
+      message: 'This is Route4 of /client route',
+    };
+  }
 }
