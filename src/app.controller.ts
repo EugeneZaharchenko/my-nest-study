@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Get, Req } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -44,4 +45,34 @@ export class ClientController {
       message: 'This is Route4 of /client route',
     };
   }
+}
+
+@Controller('request')
+export class RequestDetailsController {
+  @Post('create')
+  create(@Body() data: any) {
+    return data;
+  }
+  @Get()
+  getToken(@Req() req: Request) {
+    const token = req['token'];
+    return { message: 'Access Authorized', token };
+  }
+}
+
+export function RequestDetailsMiddleware(
+  req: Request,
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  next: NextFunction,
+) {
+  const { method, url, body, headers } = req;
+  const requestData = {
+    method: method,
+    url: url,
+    body: body,
+    userAgent: headers['user-agent'],
+    contentType: headers['content-type'],
+  };
+  res.json(requestData);
 }

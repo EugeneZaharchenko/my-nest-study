@@ -4,11 +4,17 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController, ClientController } from './app.controller';
+import {
+  AppController,
+  ClientController,
+  RequestDetailsController,
+} from './app.controller';
 import { AppService } from './app.service';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import { TokenMiddleware } from './middleware/token.middleware';
 import { ContentTypeMiddleware } from './middleware/content-type/content-type.middleware';
+import { TimeStampMiddleware } from './middleware/time-stamp/time-stamp.middleware';
+import { RequestDetailsMiddleware } from './middleware/request-details/request-details.middleware';
 
 @Module({
   imports: [],
@@ -18,11 +24,18 @@ import { ContentTypeMiddleware } from './middleware/content-type/content-type.mi
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggingMiddleware).forRoutes('*');
+    // consumer
+    //   .apply(LoggingMiddleware, TimeStampMiddleware)  // multiple middleware GLOBALLY
+    //   .forRoutes({ path: '*', method: RequestMethod.ALL });
 
     consumer.apply(TokenMiddleware).forRoutes('/getToken');
     consumer
       .apply(ContentTypeMiddleware)
       .exclude({ path: 'client/route4', method: RequestMethod.POST })
       .forRoutes(ClientController);
+
+    consumer
+      .apply(RequestDetailsMiddleware, TimeStampMiddleware)
+      .forRoutes(RequestDetailsController);
   }
 }
