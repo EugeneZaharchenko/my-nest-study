@@ -1,5 +1,15 @@
-import { Body, Controller, Post, Get, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { TestInterceptor } from './interceptors/test/test.interceptor';
 
 @Controller()
 export class AppController {
@@ -21,6 +31,15 @@ export class AppController {
   @Get('client')
   checkContentType() {
     return { message: 'Welcome to /client route' };
+  }
+}
+
+@Controller()
+export class ItcController {
+  @Get('all')
+  @UseInterceptors(TestInterceptor)
+  getAll() {
+    return 'Interceptors are working';
   }
 }
 
@@ -48,8 +67,10 @@ export class ClientController {
 }
 
 @Controller('request')
+@UseGuards(AuthGuard)
 export class RequestDetailsController {
   @Post('create')
+  // @UseGuards(AuthGuard)
   create(@Body() data: any) {
     return data;
   }
