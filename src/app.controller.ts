@@ -10,6 +10,7 @@ import {
 import { NextFunction, Request, Response } from 'express';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { TestInterceptor } from './interceptors/test/test.interceptor';
+import { ResponceTransformInterceptor } from './interceptors/responce-transform/responce-transform.interceptor';
 
 @Controller()
 export class AppController {
@@ -40,6 +41,15 @@ export class ItcController {
   @UseInterceptors(TestInterceptor)
   getAll() {
     return 'Interceptors are working';
+  }
+
+  @Get('getData')
+  @UseInterceptors(ResponceTransformInterceptor)
+  getData() {
+    return {
+      message: 'This is the responce data',
+      timestamp: new Date().toISOString(),
+    };
   }
 }
 
