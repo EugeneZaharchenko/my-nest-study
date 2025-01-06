@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   CallHandler,
   ExecutionContext,
   Injectable,
@@ -10,6 +11,14 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 @Injectable()
 export class UserDataTransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    if (request.method === 'POST') {
+      const { id, name, email, password } = request.body;
+      if (!id || !name || !email || !password) {
+        throw new BadRequestException('A field is missing');
+      }
+    }
+
     return next.handle().pipe(
       map((data) => {
         if (Array.isArray(data)) {

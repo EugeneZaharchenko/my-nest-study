@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
 @Injectable()
 export class UserService {
-  private users = [
+  private users: User[] = [
     {
       id: 1,
       name: 'UserA',
@@ -25,5 +32,10 @@ export class UserService {
 
   findOne(id: number) {
     return this.users.find((user) => user.id === id);
+  }
+
+  addUser(user: User) {
+    this.users.push(user);
+    return this.users.length;
   }
 }
