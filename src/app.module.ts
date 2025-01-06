@@ -17,9 +17,10 @@ import { ContentTypeMiddleware } from './middleware/content-type/content-type.mi
 import { TimeStampMiddleware } from './middleware/time-stamp/time-stamp.middleware';
 import { RequestDetailsMiddleware } from './middleware/request-details/request-details.middleware';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [],
+  imports: [UserModule],
   controllers: [
     AppController,
     ClientController,

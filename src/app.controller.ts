@@ -11,6 +11,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { TestInterceptor } from './interceptors/test/test.interceptor';
 import { ResponceTransformInterceptor } from './interceptors/responce-transform/responce-transform.interceptor';
+// import { UserDataTransformInterceptor } from './interceptors/user-data-transform/user-data-transform.interceptor';
 
 @Controller()
 export class AppController {
@@ -19,11 +20,11 @@ export class AppController {
     console.log(msg);
     return 'Message received successfully';
   }
-  @Get()
-  getToken(@Req() req: Request) {
-    const token = req['token'];
-    return { message: 'Access Authorized', token };
-  }
+  // @Get()
+  // getToken(@Req() req: Request) {
+  //   const token = req['token'];
+  //   return { message: 'Access Authorized', token };
+  // }
   @Get('getToken')
   checkToken(@Req() req: Request) {
     const token = req['token'];
