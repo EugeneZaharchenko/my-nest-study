@@ -1,0 +1,8 @@
+FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD=rootpass
+ENV MYSQL_DATABASE=my-nest-study
+ENV MYSQL_USER=nestuser
+ENV MYSQL_PASSWORD=nestpass
+
+EXPOSE 3306

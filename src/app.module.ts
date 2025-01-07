@@ -18,16 +18,41 @@ import { TimeStampMiddleware } from './middleware/time-stamp/time-stamp.middlewa
 import { RequestDetailsMiddleware } from './middleware/request-details/request-details.middleware';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { UserModule } from './modules/user/user.module';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Product } from './entities/product';
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    UserModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'nestuser',
+      password: 'nestpass',
+      database: 'my-nest-study',
+      entities: [Product],
+      logging: true,
+      synchronize: true,
+    }),
+  ],
   controllers: [
     AppController,
     ClientController,
     ItcController,
     RequestDetailsController,
   ],
-  providers: [AppService, AuthGuard],
+  providers: [
+    AppService,
+    AuthGuard,
+    // Global interceptor
+    // {
+    //   provide: 'APP_INTERCEPTOR',
+    //   useClass: AuthInterceptor,
+    // },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
