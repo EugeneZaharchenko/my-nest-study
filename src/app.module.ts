@@ -22,6 +22,9 @@ import { UserModule } from './modules/user/user.module';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product';
+import { ProductController } from './products/controller/product/product.controller';
+import { ProductModule } from './products/module/product/product.module';
+import { ProductService } from './products/service/product/product.service';
 
 @Module({
   imports: [
@@ -37,16 +40,19 @@ import { Product } from './entities/product';
       logging: true,
       synchronize: true,
     }),
+    ProductModule,
   ],
   controllers: [
     AppController,
     ClientController,
     ItcController,
     RequestDetailsController,
+    ProductController,
   ],
   providers: [
     AppService,
     AuthGuard,
+    ProductService,
     // Global interceptor
     // {
     //   provide: 'APP_INTERCEPTOR',
